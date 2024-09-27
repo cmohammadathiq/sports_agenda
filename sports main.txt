@@ -1,0 +1,102 @@
+class Broadcast:
+    def __init__(self, event_name, sport_type, date_time, channel,venue):
+        self.event_name = event_name
+        self.sport_type = sport_type
+        self.date_time = date_time
+        self.channel = channel
+        self.venue=venue
+
+class BroadcastScheduler:
+    def __init__(self):
+        self.schedule = []
+
+    # Create - Add new broadcast
+    def add_broadcast(self, event_name, sport_type, date_time, channel,venue):
+        broadcast =Broadcast(event_name, sport_type, date_time, channel,venue)
+        self.schedule.append(broadcast)
+        print(f"Broadcast '{event_name}'live only on  '{channel}' on '{date_time}' at '{venue}'.")
+
+    # Read - View all broadcasts
+    def view_schedule(self):
+        if not self.schedule:
+            print("No broadcasts scheduled.")
+        else:
+            print("\nSports Broadcast Schedule:")
+            for idx, broadcast in enumerate(self.schedule, start=1):
+                print(f"{idx}. Event: {broadcast.event_name}, Sport: {broadcast.sport_type}, Time: {broadcast.date_time}, Channel: {broadcast.channel},venue: {broadcast.venue}")
+
+    # Update - Modify broadcast schedule
+    def update_broadcast(self, event_name, new_date_time=None, new_channel=None,new_venue=None):
+        for broadcast in self.schedule:
+            if broadcast.event_name == event_name:
+                if new_date_time:
+                    broadcast.date_time = new_date_time
+                if new_channel:
+                    broadcast.channel = new_channel
+                if venue:
+                    broadcast.venue=new_venue
+                print(f"Broadcast '{event_name}' has been updated.")
+                return
+        print(f"Broadcast '{event_name}' not found.")
+
+    # Delete - Remove a broadcast from the schedule
+    def remove_broadcast(self, event_name):
+        for broadcast in self.schedule:
+            if broadcast.event_name == event_name:
+                self.schedule.remove(broadcast)
+                print(f"Broadcast '{event_name}' has been removed from the schedule.")
+                return
+        print(f"Broadcast '{event_name}' not found.")
+
+# Main program to demonstrate functionality
+def display_menu():
+    print("\nSports Broadcast Scheduling Tool")
+    print("1. Add Broadcast")
+    print("2. View Schedule")
+    print("3. Update Broadcast")
+    print("4. Remove Broadcast")
+    print("5. Exit")
+
+if __name__== "__main__":
+    scheduler = BroadcastScheduler()
+
+    while True:
+        display_menu()
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            # Add new broadcast
+            event_name = input("Enter event name: ")
+            sport_type = input("Enter sport type: ")
+            date_time = input("Enter date and time (e.g., 2024-09-27 18:00): ")
+            channel = input("Enter broadcast channel: ")
+            venue=input("Enter venue:")
+            scheduler.add_broadcast(event_name, sport_type, date_time, channel,venue)
+
+        elif choice == '2':
+            # View all broadcasts
+            scheduler.view_schedule()
+
+        elif choice == '3':
+            # Update broadcast information
+            event_name = input("Enter the name of the event to update: ")
+            new_date_time = input("Enter new date and time (leave blank if no change): ")
+            new_channel = input("Enter new channel (leave blank if no change): ")
+            scheduler.update_broadcast(
+                event_name,
+                new_date_time or None,
+                new_channel or None
+            )
+
+        elif choice == '4':
+            # Remove broadcast
+            event_name = input("Enter the name of the event to remove: ")
+            scheduler.remove_broadcast(event_name)
+
+        elif choice == '5':
+            # Exit the program
+            print("Exiting Sports Broadcast Scheduling Tool.")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
